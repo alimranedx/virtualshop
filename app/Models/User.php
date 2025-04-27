@@ -33,6 +33,11 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    //user type constants  goes there 1=>super_admin , 2=>admin, 3=>manager
+    const USER_TYPE_SUPER_ADMIN = 1;
+    const USER_TYPE_ADMIN = 2;
+    const USER_TYPE_MANAGER = 3;
+
     /**
      * Get the attributes that should be cast.
      *
