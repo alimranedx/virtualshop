@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
+use Common\Services\Authentication\UserDashboardControlService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,18 +30,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
         $authUser = Auth::user();
-        $redirect_to = 'dashboard';
-        if(!empty($authUser->user_type)){
-            if($authUser->user_type == User::USER_TYPE_SUPER_ADMIN){
-                $redirect_to = 'super.admin.dashboard';
-            }
-            if($authUser->user_type == User::USER_TYPE_ADMIN){
-                $redirect_to = 'admin.dashboard';
-            }
-            if($authUser->user_type == User::USER_TYPE_MANAGER){
-                $redirect_to = 'manager.dashboard';
-            }
-        }
+        $redirect_to = (new UserDashboardControlService())->redirectToDashboard($authUser);
 
         return redirect()->intended(route($redirect_to, absolute: false));
     }
@@ -50,12 +40,14 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        $authUser = Auth::user() ?? [];
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
+        $redirect_to = (new UserDashboardControlService())->redirectToLogin($authUser);
 
-        return redirect('/');
+        return redirect()->route($redirect_to);
     }
 }

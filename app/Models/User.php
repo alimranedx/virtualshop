@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'user_type'
     ];
 
     /**
@@ -37,6 +38,10 @@ class User extends Authenticatable
     const USER_TYPE_SUPER_ADMIN = 1;
     const USER_TYPE_ADMIN = 2;
     const USER_TYPE_MANAGER = 3;
+    const USER_TYPE_USER = 4;
+    const USER_TYPES = [self::USER_TYPE_SUPER_ADMIN, self::USER_TYPE_ADMIN, self::USER_TYPE_MANAGER, self::USER_TYPE_USER];
+    const STATUS_ACTIVE = 1;
+    const STATUS_INACTIVE = 0;
 
     /**
      * Get the attributes that should be cast.
