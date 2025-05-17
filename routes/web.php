@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\CustomLoginController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RegisteredAdminController;
+use App\Http\Controllers\RegisteredManagerController;
 use App\Models\User;
 use Common\Services\Authentication\UserDashboardControlService;
 use Illuminate\Support\Facades\Auth;
@@ -34,6 +36,15 @@ Route::middleware('guest')->group(function () {
     Route::get('/super-admin/login', [CustomLoginController::class, 'superAdminLogin'])->name('super.admin.login');
     Route::get('/admin/login', [CustomLoginController::class, 'adminLogin'])->name('admin.login');
     Route::get('/manager/login', [CustomLoginController::class, 'managerLogin'])->name('manager.login');
+
+    //register routes =========
+    Route::get('admin/register', [RegisteredAdminController::class, 'create'])->name('admin.register');
+    Route::get('manager/register', [RegisteredManagerController::class, 'create'])->name('manager.register');
+
+    Route::get('/super-admin', [\App\Http\Controllers\SuperAdminController::class, 'index'])->name('super.admin.index');
+    Route::get('/admin', [\App\Http\Controllers\AdminController::class, 'index'])->name('admin.index');
+    Route::get('/manager', [\App\Http\Controllers\ManagerController::class, 'index'])->name('manager.index');
+
 });
 
 // Super Admin Dashboard

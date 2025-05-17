@@ -6,7 +6,7 @@
 
     <form method="POST" action="{{ route('login') }}">
         @csrf
-
+        <input type="hidden" name="user_type" value="{{ \App\Models\User::USER_TYPE_MANAGER }}">
         <!-- Email Address -->
         <div>
             <x-input-label for="email" :value="__('Email')" />

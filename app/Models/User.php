@@ -40,8 +40,15 @@ class User extends Authenticatable
     const USER_TYPE_MANAGER = 3;
     const USER_TYPE_USER = 4;
     const USER_TYPES = [self::USER_TYPE_SUPER_ADMIN, self::USER_TYPE_ADMIN, self::USER_TYPE_MANAGER, self::USER_TYPE_USER];
+    const USER_TYPE_TEXT = [
+        self::USER_TYPE_SUPER_ADMIN => 'Super Admin',
+        self::USER_TYPE_ADMIN => 'Admin',
+        self::USER_TYPE_MANAGER => 'Manager',
+        self::USER_TYPE_USER => 'User'
+    ];
     const STATUS_ACTIVE = 1;
     const STATUS_INACTIVE = 0;
+    const USER_TYPE_UNKNOWN = 'unknown_user';
 
     /**
      * Get the attributes that should be cast.

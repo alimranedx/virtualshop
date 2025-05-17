@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,7 +22,7 @@ class CheckUserType
         $user = auth()->user();
         // If user_type not in allowed types, abort
         if (!in_array($user->user_type, $types)) {
-            abort(403, 'Unauthorized Access.');
+            abort(403, 'Unauthorized Access. you are loged in as '.User::USER_TYPE_TEXT[$user->user_type] ?? User::USER_TYPE_UNKNOWN);
         }
 
         return $next($request);

@@ -1,7 +1,7 @@
 <x-guest-layout>
     <form method="POST" action="{{ route('register') }}">
         @csrf
-        <input type="hidden" name="user_type" value="{{ \App\Models\User::USER_TYPE_USER }}">
+        <input type="hidden" name="user_type" value="{{ \App\Models\User::USER_TYPE_ADMIN }}">
         <!-- Name -->
         <div>
             <x-input-label for="name" :value="__('Name')" />
