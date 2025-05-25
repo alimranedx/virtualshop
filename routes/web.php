@@ -4,6 +4,8 @@ use App\Http\Controllers\CustomLoginController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisteredAdminController;
 use App\Http\Controllers\RegisteredManagerController;
+use App\Http\Controllers\SuperAdminController;
+use App\Http\Controllers\UserManagementController;
 use App\Models\User;
 use Common\Services\Authentication\UserDashboardControlService;
 use Illuminate\Support\Facades\Auth;
@@ -48,9 +50,17 @@ Route::middleware('guest')->group(function () {
 });
 
 // Super Admin Dashboard
-Route::middleware(['auth','user_type:'.User::USER_TYPE_SUPER_ADMIN])->group(function () {
-    Route::get('/super-admin/dashboard', [\App\Http\Controllers\SuperAdminController::class, 'dashboard'])->name('super.admin.dashboard');
-});
+Route::middleware(['auth', 'user_type:' . User::USER_TYPE_SUPER_ADMIN])
+    ->prefix('super-admin')
+    ->group(function () {
+        Route::get('/dashboard', [SuperAdminController::class, 'dashboard'])->name('super.admin.dashboard');
+
+        Route::get('/user/management', [UserManagementController::class, 'index'])->name('user.management.index');
+        Route::get('/role', [RoleController::class, 'index'])->name('role.index');
+        Route::get('/permission', [PermissionController::class, 'index'])->name('permission.index');
+        Route::get('/user/management/edit/{id}', [UserManagementController::class, 'userEdit'])->name('user.management.edit');
+        Route::post('/user/management/update/{id}', [UserManagementController::class, 'userUpdate'])->name('user.management.update');
+    });
 
 // Admin Dashboard
 Route::middleware(['auth', 'user_type:'.User::USER_TYPE_ADMIN])->group(function () {
@@ -62,3 +72,7 @@ Route::middleware(['auth', 'user_type:'.User::USER_TYPE_MANAGER])->group(functio
     Route::get('/manager/dashboard', [\App\Http\Controllers\ManagerController::class, 'dashboard'])->name('manager.dashboard');
 });
 Route::get('/testing', [\App\Http\Controllers\TestController::class, 'index']);
+
+
+
+

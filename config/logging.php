@@ -1,9 +1,17 @@
 <?php
 
+use Common\Services\PanelService;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
 use Monolog\Processor\PsrLogMessageProcessor;
+
+$panel = request()->segment(1);
+if(in_array($panel, PanelService::panels)){
+    $panel = $panel;
+}else{
+    $panel = PanelService::USER_PANEL;
+}
 
 return [
 
@@ -18,7 +26,7 @@ return [
     |
     */
 
-    'default' => env('LOG_CHANNEL', 'stack'),
+    'default' => env('LOG_CHANNEL', 'daily'),
 
     /*
     |--------------------------------------------------------------------------
@@ -67,7 +75,7 @@ return [
 
         'daily' => [
             'driver' => 'daily',
-            'path' => storage_path('logs/laravel.log'),
+            'path' => storage_path('logs/'.$panel.'-'.\Carbon\Carbon::now()->format('Y-m-d').'.log'),
             'level' => env('LOG_LEVEL', 'debug'),
             'days' => env('LOG_DAILY_DAYS', 14),
             'replace_placeholders' => true,

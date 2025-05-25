@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Yajra\DataTables\DataTables;
 
 class User extends Authenticatable
 {
@@ -49,6 +50,12 @@ class User extends Authenticatable
     const STATUS_ACTIVE = 1;
     const STATUS_INACTIVE = 0;
     const USER_TYPE_UNKNOWN = 'unknown_user';
+    const DEFAULT_PAGINATION_PAGE_LIMIT = 10;
+
+    const USER_STATUS = [
+        self::STATUS_INACTIVE => 'Inactive',
+        self::STATUS_ACTIVE => 'Active'
+    ];
 
     /**
      * Get the attributes that should be cast.
@@ -61,5 +68,29 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+    public function getAllUsers($search_params = [])
+    {
+        $query = self::query();
+        if(!empty($search_params)){
+            if(!empty($search_params['paginate'])){
+                $limit = $search_params['limit'] ?? self::DEFAULT_PAGINATION_PAGE_LIMIT;
+                $query = $query->paginate($limit);
+            }
+            if(!empty($search_params['data_table'])){
+                $query = DataTables::of($query)->make(true);
+            }
+        }else{
+            $query = $query->get();
+        }
+        return $query;
+    }
+    public function getById($id)
+    {
+        return self::query()->where('id', $id)->first();
+    }
+    public function updateUserById($id, $data)
+    {
+        return self::query()->where('id', $id)->update($data);
     }
 }
