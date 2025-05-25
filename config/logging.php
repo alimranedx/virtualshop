@@ -6,11 +6,14 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
 use Monolog\Processor\PsrLogMessageProcessor;
 
-$panel = request()->segment(1);
-if(in_array($panel, PanelService::panels)){
-    $panel = $panel;
-}else{
-    $panel = PanelService::USER_PANEL;
+$panel = '';
+if(app()->bound('request')){
+    $panel = request()->segment(1);
+    if(in_array($panel, PanelService::panels)){
+        $panel = $panel;
+    }else{
+        $panel = PanelService::USER_PANEL;
+    }
 }
 
 return [
