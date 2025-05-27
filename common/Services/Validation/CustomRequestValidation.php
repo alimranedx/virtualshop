@@ -29,5 +29,19 @@ class CustomRequestValidation
             'status' => ['required', Rule::in(array_keys(User::USER_STATUS))]
         ];
     }
+    public static function getRoleAddRules()
+    {
+        return [
+            'name' => ['required', 'min:2' , 'max:255', 'unique:roles,name'],
+            'type' => ['required', Rule::in(User::USER_TYPES)]
+        ];
+    }
+    public static function getRoleUpdateRules($role_id)
+    {
+        return [
+            'name' => ['required', 'min:2' , 'max:255', Rule::unique('roles', 'name')->ignore($role_id)],
+            'type' => ['required', Rule::in(User::USER_TYPES)]
+        ];
+    }
 
 }

@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\CustomLoginController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisteredAdminController;
 use App\Http\Controllers\RegisteredManagerController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\UserManagementController;
 use App\Models\User;
@@ -56,10 +58,16 @@ Route::middleware(['auth', 'user_type:' . User::USER_TYPE_SUPER_ADMIN])
         Route::get('/dashboard', [SuperAdminController::class, 'dashboard'])->name('super.admin.dashboard');
 
         Route::get('/user/management', [UserManagementController::class, 'index'])->name('user.management.index');
-        Route::get('/role', [RoleController::class, 'index'])->name('role.index');
-        Route::get('/permission', [PermissionController::class, 'index'])->name('permission.index');
         Route::get('/user/management/edit/{id}', [UserManagementController::class, 'userEdit'])->name('user.management.edit');
         Route::post('/user/management/update/{id}', [UserManagementController::class, 'userUpdate'])->name('user.management.update');
+        //Role
+        Route::get('/role', [RoleController::class, 'index'])->name('role.index');
+        Route::match(['get', 'post'], '/role/add', [RoleController::class, 'add'])->name('role.add');
+        Route::get('/role/edit/{id}', [RoleController::class, 'edit'])->name('role.edit');
+        Route::post('/role/update/{id}', [RoleController::class, 'update'])->name('role.update');
+        Route::get('/role/delete/{id}', [RoleController::class, 'delete'])->name('role.delete');
+        // Permission
+        Route::get('/permission', [PermissionController::class, 'index'])->name('permission.index');
     });
 
 // Admin Dashboard
