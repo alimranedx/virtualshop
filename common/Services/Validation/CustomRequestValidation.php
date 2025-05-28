@@ -43,5 +43,21 @@ class CustomRequestValidation
             'type' => ['required', Rule::in(User::USER_TYPES)]
         ];
     }
+    public static function getPermissionAddRules()
+    {
+        return [
+            'name' => ['required', 'min:2' , 'max:255', 'unique:permissions,name'],
+            'display_name' => ['required', 'min:2' , 'max:255', 'unique:permissions,display_name'],
+            'type' => ['required', Rule::in(User::USER_TYPES)]
+        ];
+    }
+    public static function getPermissionUpdateRules($permission_id)
+    {
+        return [
+            'name' => ['required', 'min:2' , 'max:255', Rule::unique('permissions', 'name')->ignore($permission_id)],
+            'display_name' => ['required', 'min:2' , 'max:255', Rule::unique('permissions', 'display_name')->ignore($permission_id)],
+            'type' => ['required', Rule::in(User::USER_TYPES)]
+        ];
+    }
 
 }

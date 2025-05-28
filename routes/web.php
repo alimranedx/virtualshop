@@ -68,6 +68,10 @@ Route::middleware(['auth', 'user_type:' . User::USER_TYPE_SUPER_ADMIN])
         Route::get('/role/delete/{id}', [RoleController::class, 'delete'])->name('role.delete');
         // Permission
         Route::get('/permission', [PermissionController::class, 'index'])->name('permission.index');
+        Route::match(['get', 'post'], '/permission/add', [PermissionController::class, 'add'])->name('permission.add');
+        Route::get('/permission/edit/{id}', [PermissionController::class, 'edit'])->name('permission.edit');
+        Route::post('/permission/update/{id}', [PermissionController::class, 'update'])->name('permission.update');
+        Route::get('/permission/delete/{id}', [PermissionController::class, 'delete'])->name('permission.delete');
     });
 
 // Admin Dashboard
