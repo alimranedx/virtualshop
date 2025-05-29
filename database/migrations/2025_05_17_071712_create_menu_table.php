@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sub_menus', function (Blueprint $table) {
+        Schema::create('menu', function (Blueprint $table) {
             $table->id();
+            $table->string('name', 255);
+            $table->string('display_name', 255);
+            $table->integer('order')->comment('1, 2, 3, 4, 5, ......');
+            $table->string('icon', 255);
             $table->timestamps();
         });
     }
@@ -22,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('role_permission_sub_menus');
+        Schema::dropIfExists('role_permission_menus');
     }
 };

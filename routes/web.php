@@ -72,6 +72,23 @@ Route::middleware(['auth', 'user_type:' . User::USER_TYPE_SUPER_ADMIN])
         Route::get('/permission/edit/{id}', [PermissionController::class, 'edit'])->name('permission.edit');
         Route::post('/permission/update/{id}', [PermissionController::class, 'update'])->name('permission.update');
         Route::get('/permission/delete/{id}', [PermissionController::class, 'delete'])->name('permission.delete');
+
+        //Menu
+
+        Route::get('/menu', [\App\Http\Controllers\MenuController::class, 'index'])->name('menu.index');
+        Route::match(['get', 'post'], '/menu/add', [\App\Http\Controllers\MenuController::class, 'add'])->name('menu.add');
+        Route::get('/menu/edit/{id}', [\App\Http\Controllers\MenuController::class, 'edit'])->name('menu.edit');
+        Route::post('/menu/update/{id}', [\App\Http\Controllers\MenuController::class, 'update'])->name('menu.update');
+        Route::get('/menu/delete/{id}', [\App\Http\Controllers\MenuController::class, 'delete'])->name('menu.delete');
+
+        //Sub Menu
+
+        Route::get('/sub-menu', [\App\Http\Controllers\SubMenuController::class, 'index'])->name('sub.menu.index');
+        Route::match(['get', 'post'], '/sub-menu/add', [\App\Http\Controllers\SubMenuController::class, 'add'])->name('sub.menu.add');
+        Route::get('/sub-menu/edit/{id}', [\App\Http\Controllers\SubMenuController::class, 'edit'])->name('sub.menu.edit');
+        Route::post('/sub-menu/update/{id}', [\App\Http\Controllers\SubMenuController::class, 'update'])->name('sub.menu.update');
+        Route::get('/sub-menu/delete/{id}', [\App\Http\Controllers\SubMenuController::class, 'delete'])->name('sub.menu.delete');
+
     });
 
 // Admin Dashboard

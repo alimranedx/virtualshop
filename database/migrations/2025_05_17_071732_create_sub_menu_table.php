@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('menus', function (Blueprint $table) {
+        Schema::create('sub_menu', function (Blueprint $table) {
             $table->id();
-            $table->string('title', 255);
-            $table->string('route_name', 255);
-            $table->bigInteger('parent_id');
-            $table->string('permission_name', 255);
+            $table->integer('menu_id')->default(0);
+            $table->string('name', 255);
+            $table->string('display_name', 255);
+            $table->string('controller_name')->default(0);
+            $table->string('method_name')->default(0);
             $table->integer('order')->comment('1, 2, 3, 4, 5, ......');
             $table->string('icon', 255);
             $table->timestamps();
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('role_permission_menus');
+        Schema::dropIfExists('role_permission_sub_menus');
     }
 };

@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <link href="{{ asset('assets/admin').'/' }}css/styles.css" rel="stylesheet" />
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+    @stack('styles')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
 </head>
 
@@ -71,6 +72,8 @@
                             <a class="nav-link" href="{{ route('user.management.index') }}">{{ __('User Management') }}</a>
                             <a class="nav-link" href="{{ route('role.index') }}">{{ __('Roles') }}</a>
                             <a class="nav-link" href="{{ route('permission.index') }}">{{ __('Permission') }}</a>
+                            <a class="nav-link" href="{{ route('menu.index') }}">{{ __('Menu') }}</a>
+                            <a class="nav-link" href="{{ route('sub.menu.index') }}">{{ __('Sub Menu') }}</a>
                             <a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
                         </nav>
                     </div>
