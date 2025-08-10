@@ -13,6 +13,7 @@ class UserManagementController extends Controller
         $data['title'] = __('User Management');
         $data['sub_title'] = __('list');
         if($request->ajax()){
+            $search_params['user_type'] = [User::USER_TYPE_ADMIN, User::USER_TYPE_MANAGER, User::USER_TYPE_USER];
             $search_params['data_table'] = true;
             return (new User())->getAllUsers($search_params)->getData();
         }

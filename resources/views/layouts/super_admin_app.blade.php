@@ -12,8 +12,28 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <link href="{{ asset('assets/admin').'/' }}css/styles.css" rel="stylesheet" />
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
-    @stack('styles')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
+    <!-- Bootstrap-select CSS (compatible with Bootstrap 5) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/css/bootstrap-select.min.css">
+    <style>
+        /* Custom styling for the dropdown */
+        .bootstrap-select .dropdown-menu {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        /* Make the select box full width */
+        .bootstrap-select .dropdown-toggle {
+            width: 100%;
+        }
+        /* Style for selected items */
+        .filter-option-inner-inner {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 90%;
+        }
+    </style>
+    @stack('styles')
 </head>
 
 <body class="sb-nav-fixed">
@@ -71,9 +91,11 @@
                         <nav class="sb-sidenav-menu-nested nav">
                             <a class="nav-link" href="{{ route('user.management.index') }}">{{ __('User Management') }}</a>
                             <a class="nav-link" href="{{ route('role.index') }}">{{ __('Roles') }}</a>
+                            <a class="nav-link" href="{{ route('user.role.index') }}">{{ __('User Role Management') }}</a>
                             <a class="nav-link" href="{{ route('permission.index') }}">{{ __('Permission') }}</a>
                             <a class="nav-link" href="{{ route('menu.index') }}">{{ __('Menu') }}</a>
                             <a class="nav-link" href="{{ route('sub.menu.index') }}">{{ __('Sub Menu') }}</a>
+                            <a class="nav-link" href="{{ route('page.index') }}">{{ __('Pages') }}</a>
                             <a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
                         </nav>
                     </div>
@@ -156,6 +178,44 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/bootstrap-select.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Initialize selectpicker
+        $('.selectpicker').selectpicker();
+    });
+    //dynamic menu submenu active js code
+    document.addEventListener('DOMContentLoaded', function() {
+        const currentPath = window.location.pathname;
+        const navLinks = document.querySelectorAll('.nav-link[href]');
+
+        navLinks.forEach(link => {
+            const linkPath = new URL(link.href).pathname;
+            if (currentPath === linkPath || currentPath.startsWith(linkPath)) {
+                link.classList.add('active');
+
+                // Expand parent collapse if exists
+                const parentCollapse = link.closest('.collapse');
+                if (parentCollapse) {
+                    parentCollapse.classList.add('show');
+                    const toggle = parentCollapse.previousElementSibling;
+                    if (toggle && toggle.classList.contains('nav-link')) {
+                        toggle.classList.remove('collapsed');
+                        toggle.setAttribute('aria-expanded', 'true');
+                    }
+                }
+            }
+        });
+    });
+    function isEmpty(value)
+    {
+        let status = false;
+        if (value == undefined || value == null || value == '') {
+            status = true;
+        }
+        return status;
+    }
+</script>
 @yield('script')
 </body>
 

@@ -73,17 +73,25 @@ class User extends Authenticatable
     {
         $query = self::query();
         if(!empty($search_params)){
+
+            if(!empty($search_params['user_type'])){
+                if(is_array($search_params['user_type'])){
+                    $query = $query->whereIn('user_type', $search_params['user_type']);
+                }else{
+                    $query = $query->where('user_type', $search_params['user_type']);
+                }
+                $query = $query->where('user_type', $search_params['user_type']);
+            }
+
             if(!empty($search_params['paginate'])){
                 $limit = $search_params['limit'] ?? self::DEFAULT_PAGINATION_PAGE_LIMIT;
-                $query = $query->paginate($limit);
+                return $query->paginate($limit);
             }
             if(!empty($search_params['data_table'])){
-                $query = DataTables::of($query)->make(true);
+                return DataTables::of($query)->make(true);
             }
-        }else{
-            $query = $query->get();
         }
-        return $query;
+        return $query->get();
     }
     public function getById($id)
     {

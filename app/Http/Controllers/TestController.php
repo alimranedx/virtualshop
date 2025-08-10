@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 class TestController extends Controller
 {
-    public function index4()
+    public function index()
     {
         return view('layouts.app_copy');
     }

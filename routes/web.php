@@ -88,6 +88,15 @@ Route::middleware(['auth', 'user_type:' . User::USER_TYPE_SUPER_ADMIN])
         Route::get('/sub-menu/edit/{id}', [\App\Http\Controllers\SubMenuController::class, 'edit'])->name('sub.menu.edit');
         Route::post('/sub-menu/update/{id}', [\App\Http\Controllers\SubMenuController::class, 'update'])->name('sub.menu.update');
         Route::get('/sub-menu/delete/{id}', [\App\Http\Controllers\SubMenuController::class, 'delete'])->name('sub.menu.delete');
+        //pages goes there
+        Route::get('/page', [\App\Http\Controllers\PageController::class, 'index'])->name('page.index');
+        Route::match(['get', 'post'], '/page/add', [\App\Http\Controllers\PageController::class, 'add'])->name('page.add');
+        Route::get('/page/edit/{id}', [\App\Http\Controllers\PageController::class, 'edit'])->name('page.edit');
+        Route::post('/page/update/{id}', [\App\Http\Controllers\PageController::class, 'update'])->name('page.update');
+        Route::get('/page/delete/{id}', [\App\Http\Controllers\PageController::class, 'delete'])->name('page.delete');
+        // user role management
+        Route::get('/user-role-management', [\App\Http\Controllers\UserRoleManagementController::class, 'index'])->name('user.role.index');
+        Route::post('/user-role-management/save', [\App\Http\Controllers\UserRoleManagementController::class, 'save'])->name('user.role.save');
 
     });
 

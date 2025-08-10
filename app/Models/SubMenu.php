@@ -42,4 +42,8 @@ class SubMenu extends Model
     {
         return self::query()->where('id', $id)->delete();
     }
+    public function getAll()
+    {
+        return self::query()->get();
+    }
 }

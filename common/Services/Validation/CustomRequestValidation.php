@@ -3,8 +3,10 @@
 namespace Common\Services\Validation;
 
 use App\Models\Menu;
+use App\Models\SubMenu;
 use App\Models\User;
 use Common\Http\StatusService;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
@@ -155,6 +157,94 @@ class CustomRequestValidation
             'order' => ['required', 'integer', Rule::unique('sub_menu', 'order')->ignore($sub_menu_id)],
             'icon' => ['sometimes', 'string', 'min:2' ,'max:255'],
         ];
+    }
+    public static function validateUserRoleSaveRules($input)
+    {
+        $rules =  [
+            'role' => ['required', 'integer', 'exists:roles,id'],
+            'users' => ['required', 'array'],
+            'users.*' => [
+                'sometimes',
+                'integer',
+                'exists:users,id'
+            ],
+        ];
+
+        return self::validateData($input, $rules);
+    }
+    public static function getPageAddRules($input)
+    {
+        $menu_ids = (new Menu())->getAll()->pluck('id')->toArray() ?? [];
+        $subMenuData = (new SubMenu())->getAll();
+        $sub_menu_ids = $subMenuData->pluck('id')->toArray() ?? [];
+
+        $role =  [
+            'menu_id' => ['required', Rule::in($menu_ids)],
+            'sub_menu_id' => ['required', Rule::in($sub_menu_ids)],
+            'name' => ['required', 'string', 'min:2' , 'max:255', 'unique:sub_menu,name'],
+            'display_name' => ['required', 'string', 'min:2' , 'max:255', 'unique:sub_menu,display_name']
+            ];
+        $controller_name = '';
+        if($subMenuData->isNotEmpty() && !empty($input['sub_menu_id'])){
+            $subMenu = $subMenuData->where('id', $input['sub_menu_id'])->first();
+            $controller_name = $subMenu->controller_name ?? '';
+        }
+
+        $role = $role + [
+            'method_name' => [
+                'required',
+                'string',
+                'min:2',
+                'max:255',
+                function ($attribute, $value, $fail) use($controller_name){
+                    $controller = $controller_name;
+                    $fullClass = str_contains($value, '\\') ? $value : 'App\\Http\\Controllers\\' . $controller;
+                    if (class_exists($fullClass)) {
+                        if (!method_exists(app($fullClass), $value)) {
+                            $fail("The method '{$value}' does not exist in controller '{$controller}'.");
+                        }
+                    }
+                }
+            ]
+        ];
+        return $role;
+    }
+    public static function getPageUpdateRules($id, $input = [])
+    {
+        $menu_ids = (new Menu())->getAll()->pluck('id')->toArray() ?? [];
+        $subMenuData = (new SubMenu())->getAll();
+        $sub_menu_ids = $subMenuData->pluck('id')->toArray() ?? [];
+
+        $role =  [
+            'menu_id' => ['required', Rule::in($menu_ids)],
+            'sub_menu_id' => ['required', Rule::in($sub_menu_ids)],
+            'name' => ['required', 'string', 'min:2' , 'max:255', 'unique:pages,name,' . $id],
+            'display_name' => ['required', 'string', 'min:2' , 'max:255', 'unique:pages,display_name,'.$id ]
+        ];
+        $controller_name = '';
+        if($subMenuData->isNotEmpty() && !empty($input['sub_menu_id'])){
+            $subMenu = $subMenuData->where('id', $input['sub_menu_id'])->first();
+            $controller_name = $subMenu->controller_name ?? '';
+        }
+
+        $role = $role + [
+                'method_name' => [
+                    'required',
+                    'string',
+                    'min:2',
+                    'max:255',
+                    function ($attribute, $value, $fail) use($controller_name){
+                        $controller = $controller_name;
+                        $fullClass = str_contains($value, '\\') ? $value : 'App\\Http\\Controllers\\' . $controller;
+                        if (class_exists($fullClass)) {
+                            if (!method_exists(app($fullClass), $value)) {
+                                $fail("The method '{$value}' does not exist in controller '{$controller}'.");
+                            }
+                        }
+                    }
+                ]
+            ];
+        return $role;
     }
 
 }
