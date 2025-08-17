@@ -96,6 +96,7 @@
                             <a class="nav-link" href="{{ route('menu.index') }}">{{ __('Menu') }}</a>
                             <a class="nav-link" href="{{ route('sub.menu.index') }}">{{ __('Sub Menu') }}</a>
                             <a class="nav-link" href="{{ route('page.index') }}">{{ __('Pages') }}</a>
+                            <a class="nav-link" href="{{ route('role.pages.index') }}">{{ __('Role Pages') }}</a>
                             <a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
                         </nav>
                     </div>

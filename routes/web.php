@@ -94,6 +94,8 @@ Route::middleware(['auth', 'user_type:' . User::USER_TYPE_SUPER_ADMIN])
         Route::get('/page/edit/{id}', [\App\Http\Controllers\PageController::class, 'edit'])->name('page.edit');
         Route::post('/page/update/{id}', [\App\Http\Controllers\PageController::class, 'update'])->name('page.update');
         Route::get('/page/delete/{id}', [\App\Http\Controllers\PageController::class, 'delete'])->name('page.delete');
+        //Role Pages
+        Route::match(['get', 'post'], '/role/pages', [\App\Http\Controllers\RolePageController::class, 'index'])->name('role.pages.index');
         // user role management
         Route::get('/user-role-management', [\App\Http\Controllers\UserRoleManagementController::class, 'index'])->name('user.role.index');
         Route::post('/user-role-management/save', [\App\Http\Controllers\UserRoleManagementController::class, 'save'])->name('user.role.save');
